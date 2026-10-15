@@ -1,10 +1,50 @@
-const { test, describe } = require("node:test");
+const { test, describe, before, after } = require("node:test");
 const assert = require("node:assert");
+const mongoose = require("mongoose");
+require("dotenv").config();
 
-const BASE_URL = process.env.API_URL || "http://localhost:3000";
+let BASE_URL = process.env.API_URL || "http://localhost:3000";
+let testServer = null;
 
 describe("CareerTrack API Test Suite", () => {
   let createdId = null;
+
+  before(async () => {
+    // Check if the external server is already running on port 3000
+    try {
+      const ping = await fetch(`${BASE_URL}/`, { signal: AbortSignal.timeout(1000) });
+      if (ping.ok) {
+        return; // External server is active, test against it
+      }
+    } catch {
+      // Server not running; start an in-memory/ephemeral instance for testing
+    }
+
+    const app = require("../server");
+
+    if (mongoose.connection.readyState === 0) {
+      await mongoose.connect(
+        process.env.MONGO_URI || "mongodb://127.0.0.1:27017/jobtracker"
+      );
+    }
+
+    await new Promise((resolve) => {
+      testServer = app.listen(0, () => {
+        const port = testServer.address().port;
+        BASE_URL = `http://localhost:${port}`;
+        resolve();
+      });
+    });
+  });
+
+  after(async () => {
+    if (testServer) {
+      await new Promise((resolve) => testServer.close(resolve));
+      if (mongoose.connection.readyState !== 0) {
+        await mongoose.connection.close();
+      }
+    }
+  });
 
   test("1. GET / - Health Check Endpoint", async () => {
     const res = await fetch(`${BASE_URL}/`);

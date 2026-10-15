@@ -60,7 +60,7 @@ app.put("/api/applications/:id", async (req, res) => {
         const application = await Application.findByIdAndUpdate(
             req.params.id,
             req.body,
-            { new: true, runValidators: true }
+            { returnDocument: 'after', runValidators: true }
         );
 
         if (!application) {
@@ -142,4 +142,8 @@ async function startServer() {
     }
 }
 
-startServer();
+if (require.main === module) {
+    startServer();
+}
+
+module.exports = app;
