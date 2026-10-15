@@ -50,3 +50,17 @@ npm run dev
 ```
 
 The frontend app runs on `http://localhost:5173`.
+
+## 🧪 Testing APIs
+
+### Automated API Test Suite
+The project includes a built-in automated test suite covering all REST endpoints, validation, and CRUD operations:
+
+```bash
+cd backend
+npm test
+```
+
+### Postman / Thunder Client Collection
+Import the pre-configured collection into Postman or Thunder Client:
+`backend/test/CareerTrack_API_Postman_Collection.json`

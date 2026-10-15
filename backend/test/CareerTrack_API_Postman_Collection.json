@@ -1,0 +1,157 @@
+{
+  "info": {
+    "name": "CareerTrack API Collection",
+    "description": "API collection for CareerTrack - Job Application Tracker (MERN)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": [""]
+        }
+      }
+    },
+    {
+      "name": "Get Application Stats",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/applications/stats",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "applications", "stats"]
+        }
+      }
+    },
+    {
+      "name": "Get All Applications",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/applications",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "applications"]
+        }
+      }
+    },
+    {
+      "name": "Get Applications by Status (Filter)",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/applications?status=Interview",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "applications"],
+          "query": [
+            {
+              "key": "status",
+              "value": "Interview"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Search Applications",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/api/applications?search=Google",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "applications"],
+          "query": [
+            {
+              "key": "search",
+              "value": "Google"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Create Application",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"company\": \"Amazon\",\n  \"role\": \"SDE I\",\n  \"jobLink\": \"https://amazon.jobs\",\n  \"salaryExpectation\": 1600000,\n  \"status\": \"Applied\",\n  \"notes\": \"Referred by alumni\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/applications",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "applications"]
+        }
+      }
+    },
+    {
+      "name": "Update Application",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"Interview\",\n  \"interviewDate\": \"2026-10-25T10:00:00.000Z\",\n  \"notes\": \"Passed recruiter screen, coding round scheduled\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/applications/:id",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "applications", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "APPLICATION_ID_HERE"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Delete Application",
+      "request": {
+        "method": "DELETE",
+        "url": {
+          "raw": "http://localhost:3000/api/applications/:id",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "applications", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "APPLICATION_ID_HERE"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
