@@ -1,8 +1,13 @@
 
 import axios from "axios";
 
+let rawBase = (import.meta.env.VITE_API_URL || "http://localhost:3000/api").trim();
+if (!rawBase.endsWith("/api")) {
+    rawBase = rawBase.replace(/\/+$/, "") + "/api";
+}
+
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000/api"
+    baseURL: rawBase
 });
 
 export const getApplications = (params = {}) =>
