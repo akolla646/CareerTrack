@@ -1,141 +1,176 @@
-# CareerTrack — Job Application Tracker (MERN)
+# CareerTrack — Job Application Tracker
 
-CareerTrack is a full-stack MERN (MongoDB, Express, React, Node.js) application designed to track and manage job applications throughout every stage of the hiring pipeline.
+A full-stack MERN application designed to organize, track, and streamline job applications across every stage of the hiring pipeline. The system provides real-time application metrics, categorized pipeline management, upcoming interview scheduling, compensation tracking, and an interactive modal-based workflow.
 
----
-
-## 🚀 Features
-
-- **Dashboard Overview**: Key metrics (Total Applications, Applied, Interviews, Offers), upcoming interviews with date countdowns, and recent applications list.
-- **Multi-Page Pipeline**:
-  - `/dashboard`: Comprehensive workspace summary.
-  - `/applications`: View and manage all applications with search, status filtering, and sorting.
-  - `/applied`: Track applications submitted that are awaiting recruiter response.
-  - `/interviews`: Manage interview rounds, prep notes, with upcoming vs. past tabs and sorting by interview date.
-  - `/offers`: Celebrate offers received, review top package compensation, and negotiation notes.
-  - `/rejected`: Archived applications with feedback and interview learnings.
-- **Interactive Modals**: Add and edit applications with automatic form pre-population, field validation, and keyboard support.
-- **Responsive Teal & Mint Design**: Modern, professional UI with mobile drawer navigation, accessible states, and instant toast notifications.
+Live Demo: [https://careertrack-47mr.onrender.com](https://careertrack-47mr.onrender.com)  
+API Server: [https://careertrack-api-ky4w.onrender.com](https://careertrack-api-ky4w.onrender.com)
 
 ---
 
-## 🛠️ Tech Stack
-
-- **Frontend**: React 19, Vite, React Router 7, Axios, Lucide Icons, Vanilla CSS
-- **Backend**: Node.js, Express.js 5, Mongoose 9
-- **Database**: MongoDB (Local Community Server / MongoDB Atlas Cloud)
-- **Testing**: Node.js Built-in Test Runner (`node:test`, `node:assert`)
-
----
-
-## 📁 Project Structure
+## Project Structure
 
 ```text
-job-tracker/
-├── backend/
+/
+├── backend/                             # Express + Node.js REST API
 │   ├── models/
-│   │   └── Application.js          # Mongoose schema and model
+│   │   └── Application.js               # Mongoose schema and database model
 │   ├── test/
-│   │   ├── api.test.js             # Automated API test suite (10 tests)
-│   │   └── CareerTrack_API_Postman_Collection.json  # Postman/Thunder Client export
-│   ├── .env.example                # Template for environment variables
+│   │   ├── api.test.js                  # Automated API test suite (node:test)
+│   │   └── CareerTrack_API_Postman_Collection.json  # Postman / Thunder Client collection
 │   ├── package.json
-│   └── server.js                   # Express server and REST API endpoints
-├── frontend/
-│   ├── public/                     # Static assets and icons
+│   └── server.js                        # Express app, middleware, routes, and DB connection
+│
+├── frontend/                            # React 19 + Vite client application
 │   ├── src/
 │   │   ├── api/
-│   │   │   └── applications.js     # Axios API service client
+│   │   │   └── applications.js          # Axios API service client
 │   │   ├── components/
-│   │   │   ├── ApplicationForm.jsx # Add / Edit application modal dialog
-│   │   │   ├── ApplicationsTable.jsx # Reusable data table with actions
-│   │   │   ├── EmptyState.jsx      # Clean empty states with action triggers
-│   │   │   ├── Sidebar.jsx         # Responsive sidebar navigation with active badges
-│   │   │   ├── StatCard.jsx        # Dashboard metric cards
-│   │   │   └── Toast.jsx           # Floating notification banners
+│   │   │   ├── ApplicationForm.jsx      # Modal form for adding and editing applications
+│   │   │   ├── ApplicationsTable.jsx    # Tabular list view with row actions
+│   │   │   ├── EmptyState.jsx           # Contextual empty state illustrations
+│   │   │   ├── Sidebar.jsx              # Responsive navigation drawer with live count badges
+│   │   │   ├── StatCard.jsx             # Metric card for dashboard statistics
+│   │   │   └── Toast.jsx                # Notification banners for feedback
 │   │   ├── context/
-│   │   │   ├── AppContext.jsx      # Application state, stats & modal manager
-│   │   │   ├── AppContextDefinition.js
-│   │   │   └── useApp.js           # Custom hook for context consumption
+│   │   │   ├── AppContext.jsx           # Global state provider for stats and modals
+│   │   │   ├── AppContextDefinition.js  # React Context instance
+│   │   │   └── useApp.js                # Custom hook for consuming app state
 │   │   ├── pages/
-│   │   │   ├── AllApplications.jsx # /applications page
-│   │   │   ├── AppliedPage.jsx     # /applied page
-│   │   │   ├── Dashboard.jsx       # /dashboard page
-│   │   │   ├── InterviewsPage.jsx  # /interviews page
-│   │   │   ├── OffersPage.jsx      # /offers page
-│   │   │   └── RejectedPage.jsx    # /rejected page
-│   │   ├── App.css                 # Theme styles, mobile drawer, responsive grid
-│   │   ├── App.jsx                 # Client-side routing and shell layout
-│   │   └── main.jsx
-│   ├── index.html
+│   │   │   ├── AllApplications.jsx      # Route: /applications (full search & filter table)
+│   │   │   ├── AppliedPage.jsx          # Route: /applied (initial submissions)
+│   │   │   ├── Dashboard.jsx            # Route: /dashboard (overview & recent activity)
+│   │   │   ├── InterviewsPage.jsx       # Route: /interviews (upcoming vs past schedule)
+│   │   │   ├── OffersPage.jsx           # Route: /offers (received offers & compensation)
+│   │   │   └── RejectedPage.jsx         # Route: /rejected (archived decisions & notes)
+│   │   ├── App.css                      # Custom Teal & Mint design system
+│   │   ├── App.jsx                      # Client-side router and shell layout
+│   │   ├── index.css                    # Base global typography and resets
+│   │   └── main.jsx                     # Vite entry point
+│   ├── index.html                       # HTML5 template
 │   ├── package.json
-│   ├── vercel.json                 # SPA rewrites for Vercel deployment
-│   └── vite.config.js
+│   ├── vercel.json                      # Single Page Application rewrite rules
+│   └── vite.config.js                   # Vite configuration
+│
+├── .gitignore                           # Root-level ignore rules (secrets, dependencies)
 └── README.md
 ```
 
 ---
 
-## 📡 REST API Reference
+## Features
 
-| Method | Endpoint | Description | Query Parameters / Body |
-| :--- | :--- | :--- | :--- |
-| `GET` | `/` | Health check endpoint | — |
-| `GET` | `/api/applications/stats` | Aggregated statistics | Returns counts for Total, Applied, Interview, Offer, Rejected |
-| `GET` | `/api/applications` | List applications | `?status=Interview`, `?search=Google` |
-| `POST` | `/api/applications` | Create a new application | JSON body: `{ company, role, jobLink, salaryExpectation, status, applicationDate, interviewDate, notes }` |
-| `PUT` | `/api/applications/:id` | Update application details | JSON body with fields to update |
-| `DELETE` | `/api/applications/:id` | Delete an application | Path parameter `id` |
+| Module | Description |
+| :--- | :--- |
+| **Dashboard** | Overview metrics (Total, Applied, Interviews, Offers), upcoming interviews with date tracking, and recent application records. |
+| **All Applications** | Full searchable catalog across all stages with live text search, status filters, and multiple sorting criteria. |
+| **Applied Pipeline** | Dedicated management for applications awaiting recruiter review or first contact. |
+| **Interview Scheduler** | Tracks upcoming vs. past interview rounds, schedule dates, and interview preparation notes. |
+| **Offer Management** | Reviews received offers, highlights top compensation packages, and tracks negotiation details. |
+| **Archived / Rejected** | Preserves records of closed applications with feedback notes and learnings for future cycles. |
+| **Interactive Modals** | Add and edit applications with automatic form pre-population, numeric validation, and keyboard dismissal. |
+| **Feedback System** | Non-blocking toast notifications for CRUD actions and user confirmation dialogs before deletions. |
 
 ---
 
-## 📦 Local Development Setup
+## Tech Stack
 
-### Prerequisites
+### Backend
+- **Runtime**: Node.js (v18+)
+- **Framework**: Express.js v5
+- **Database**: MongoDB (Local Community Server / MongoDB Atlas Cloud)
+- **ODM**: Mongoose v9
+- **CORS**: cors
+- **Environment**: dotenv
+- **Testing**: Node.js Built-in Test Runner (`node:test`, `node:assert`)
 
-- [Node.js](https://nodejs.org/) (v18 or higher)
-- [MongoDB Community Server](https://www.mongodb.com/try/download/community) running locally
+### Frontend
+- **Framework**: React 19 + Vite
+- **Routing**: React Router DOM v7
+- **HTTP Client**: Axios
+- **Icons**: Lucide React
+- **Styling**: Vanilla CSS (Custom Design System with CSS Custom Properties)
+- **Fonts**: DM Sans, Manrope (Google Fonts)
 
-### 1. Backend Setup
+---
+
+## Prerequisites
+
+- Node.js (v18 or higher)
+- npm (v9 or higher)
+- MongoDB instance (Local MongoDB Community Server on port 27017 or a free [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) cluster)
+
+---
+
+## Getting Started
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/akolla646/CareerTrack.git
+cd CareerTrack
+```
+
+### 2. Backend Setup
 
 ```bash
 cd backend
 npm install
 ```
 
-Create a `.env` file in the `backend/` folder (or copy from `.env.example`):
+Create a `.env` file in the `backend/` directory:
 
 ```env
 PORT=3000
 MONGO_URI=mongodb://127.0.0.1:27017/jobtracker
 ```
 
-Start the backend development server:
+Start the backend:
 
 ```bash
+# Development (with auto-reload)
 npm run dev
+
+# Production
+npm start
 ```
 
-The backend runs on `http://localhost:3000`.
+The backend server will run on `http://localhost:3000`.
 
-### 2. Frontend Setup
-
-In a new terminal window:
+### 3. Frontend Setup
 
 ```bash
-cd frontend
+cd ../frontend
 npm install
+```
+
+Start the frontend development server:
+
+```bash
 npm run dev
 ```
 
-The frontend app runs on `http://localhost:5173`.
+The frontend application will run on `http://localhost:5173`.
 
 ---
 
-## 🧪 Testing APIs
+## Application Pipeline & Routing
 
-### 1. Automated Test Suite
-The project includes a self-contained automated test suite covering all endpoints, CRUD operations, and error handling:
+| Route | Page | Purpose |
+| :--- | :--- | :--- |
+| `/` | Redirect | Automatically redirects to `/dashboard`. |
+| `/dashboard` | Dashboard | High-level summary, stat cards, upcoming interviews, and recent entries. |
+| `/applications` | All Applications | Complete list of all applications regardless of status, with search and filtering. |
+| `/applied` | Applied | Applications currently in the `Applied` stage. |
+| `/interviews` | Interviews | Applications with status `Interview`, grouped by upcoming and past dates. |
+| `/offers` | Offers | Applications with status `Offer`, highlighting compensation figures. |
+| `/rejected` | Rejected | Applications with status `Rejected`, storing notes and retrospective details. |
+
+---
+
+## Testing
+
+### Automated Backend Tests
+The backend includes a self-contained automated test suite covering health checks, aggregation stats, input validation, and full CRUD operations. The suite automatically detects if an external server is running, or launches an ephemeral instance:
 
 ```bash
 cd backend
@@ -143,6 +178,7 @@ npm test
 ```
 
 Expected output:
+
 ```text
 ▶ CareerTrack API Test Suite
   ✔ 1. GET / - Health Check Endpoint
@@ -159,36 +195,61 @@ Expected output:
 ℹ tests 10 | pass 10 | fail 0
 ```
 
-### 2. Postman / Thunder Client Collection
-Import the pre-configured collection file:
-- `backend/test/CareerTrack_API_Postman_Collection.json`
+### API Collection (Postman / Thunder Client)
+A pre-configured JSON collection is available at:
+`backend/test/CareerTrack_API_Postman_Collection.json`
+
+Import this file directly into Postman or Thunder Client to test all endpoints.
 
 ---
 
-## 🌐 Cloud Deployment Guide
+## Key API Endpoints
 
-### 1. Database (MongoDB Atlas)
-1. Create a free cluster on [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
-2. Under **Security ➜ Network Access**, add `0.0.0.0/0` (Allow Access from Anywhere).
-3. Under **Security ➜ Database Access**, create a database user and password.
-4. Copy your connection string (`mongodb+srv://.../jobtracker?retryWrites=true&w=majority`).
+### Health & Statistics
 
-### 2. Backend (Render Web Service)
-1. On [Render](https://render.com), create a **New Web Service** connected to your GitHub repo.
-2. Settings:
-   - **Root Directory**: `backend`
-   - **Build Command**: `npm install`
-   - **Start Command**: `node server.js`
-   - **Environment Variable**: `MONGO_URI` = `<Your MongoDB Atlas Connection String>`
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `GET` | `/` | Service health check |
+| `GET` | `/api/applications/stats` | Status counts aggregation (Total, Applied, Interview, Offer, Rejected) |
 
-### 3. Frontend (Render Static Site or Vercel)
-- **Render Static Site**:
-  - **Root Directory**: `frontend`
-  - **Build Command**: `npm run build`
-  - **Publish Directory**: `dist`
-  - **Environment Variable**: `VITE_API_URL` = `<Your Deployed Backend URL>/api`
-  - **Redirects / Rewrites**: Type `Rewrite`, Source `/*`, Destination `/index.html`
-- **Vercel**:
-  - Import repo, set Root Directory to `frontend`.
-  - Add Environment Variable `VITE_API_URL` = `<Your Deployed Backend URL>/api`.
-  - Client-side routing is handled automatically via `frontend/vercel.json`.
+### Applications CRUD
+
+| Method | Endpoint | Description | Query Parameters / Body |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/api/applications` | Retrieve applications | `?status=Interview`, `?search=Google` |
+| `POST` | `/api/applications` | Create a new record | `{ company, role, jobLink, salaryExpectation, status, applicationDate, interviewDate, notes }` |
+| `PUT` | `/api/applications/:id` | Update existing record | Fields to update (JSON body) |
+| `DELETE` | `/api/applications/:id` | Remove application by ID | Path parameter `id` |
+
+---
+
+## Cloud Deployment
+
+### Database (MongoDB Atlas)
+1. Host a free M0 cluster on MongoDB Atlas.
+2. In Network Access, add `0.0.0.0/0` to allow connections from dynamic cloud IPs.
+3. In Database Access, configure a user with read/write privileges.
+4. Set the `MONGO_URI` connection string in the cloud hosting provider.
+
+### Backend (Render Web Service)
+- **Service Type**: Web Service
+- **Root Directory**: `backend`
+- **Build Command**: `npm install`
+- **Start Command**: `node server.js`
+- **Environment Variables**:
+  - `MONGO_URI`: Atlas connection string
+
+### Frontend (Render Static Site / Vercel)
+- **Service Type**: Static Site
+- **Root Directory**: `frontend`
+- **Build Command**: `npm run build`
+- **Publish Directory**: `dist`
+- **Environment Variables**:
+  - `VITE_API_URL`: `https://careertrack-api-ky4w.onrender.com/api`
+- **SPA Rewrite Rule**: Source `/*` ➜ Destination `/index.html`
+
+---
+
+## License
+
+This project was developed for academic and educational evaluation.
